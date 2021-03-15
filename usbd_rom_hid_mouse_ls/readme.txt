@@ -1,0 +1,18 @@
+LPC11U6x Mouse example (low speed)
+==================================
+
+Example description
+-------------------
+The example shows how to us USBD ROM stack to create a XTAL-less low speed HID mouse.
+
+
+Special connection requirements
+-------------------------------
+For low-speed USB operation USB_DP and USB_DM lines have swapped on board. That
+is USB_DP should be connected to D- pin on the connector similarly USB_DM to D+.
+On Manley boards R8 and R11 resistors can be removed to do the swap.
+The tiny joystick that is surface mounted on the eval board moves the mouse.
+Pressing the joystick in causes a left mouse click to happening over USB.
+For most OSs, no drivers are needed.
+
+
