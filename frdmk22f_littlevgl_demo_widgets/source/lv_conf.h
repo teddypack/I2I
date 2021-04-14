@@ -15,8 +15,8 @@
  *====================*/
 
 /* Maximal horizontal and vertical resolution to support by the library.*/
-#define LV_HOR_RES_MAX          (LCD_WIDTH)
-#define LV_VER_RES_MAX          (LCD_HEIGHT)
+#define LV_HOR_RES_MAX          240//(LCD_WIDTH)
+#define LV_VER_RES_MAX          320//(LCD_HEIGHT)
 
 /* Color depth:
  * - 1:  1 byte per pixel
