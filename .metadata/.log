@@ -9467,3 +9467,752 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-17 16:53:11.188
 !MESSAGE RedlinkServer telnet session connected on port 3025->54365 @ 127.0.0.1
+
+!ENTRY org.eclipse.core.jobs 4 2 2021-04-17 20:14:46.950
+!MESSAGE Deadlock detected. All locks owned by thread Worker-156: Updating workspace will be suspended.
+!STACK 0
+java.lang.IllegalStateException
+	at org.eclipse.core.internal.jobs.DeadlockDetector.reportDeadlock(DeadlockDetector.java:604)
+	at org.eclipse.core.internal.jobs.DeadlockDetector.lockWaitStart(DeadlockDetector.java:408)
+	at org.eclipse.core.internal.jobs.LockManager.addLockWaitThread(LockManager.java:147)
+	at org.eclipse.core.internal.jobs.OrderedLock.doAcquire(OrderedLock.java:171)
+	at org.eclipse.core.internal.jobs.OrderedLock.acquire(OrderedLock.java:109)
+	at org.eclipse.core.internal.jobs.OrderedLock.acquire(OrderedLock.java:85)
+	at org.eclipse.cdt.internal.core.settings.model.xml.XmlProjectDescriptionStorage.getProjectDescription(XmlProjectDescriptionStorage.java:233)
+	at org.eclipse.cdt.internal.core.settings.model.CProjectDescriptionManager.getProjectDescriptionInternal(CProjectDescriptionManager.java:426)
+	at org.eclipse.cdt.internal.core.settings.model.CProjectDescriptionManager.getProjectDescription(CProjectDescriptionManager.java:408)
+	at org.eclipse.cdt.internal.core.settings.model.CProjectDescriptionManager.getProjectDescription(CProjectDescriptionManager.java:402)
+	at org.eclipse.cdt.internal.core.settings.model.CProjectDescriptionManager.getProjectDescription(CProjectDescriptionManager.java:395)
+	at org.eclipse.cdt.internal.core.model.CProject.computeSourceRoots(CProject.java:610)
+	at org.eclipse.cdt.internal.core.model.CProject.computeChildren(CProject.java:631)
+	at org.eclipse.cdt.internal.core.model.CProject.buildStructure(CProject.java:595)
+	at org.eclipse.cdt.internal.core.model.Openable.generateInfos(Openable.java:264)
+	at org.eclipse.cdt.internal.core.model.CElement.openWhenClosed(CElement.java:428)
+	at org.eclipse.cdt.internal.core.model.CElement.getElementInfo(CElement.java:306)
+	at org.eclipse.cdt.internal.core.model.CElement.getElementInfo(CElement.java:296)
+	at org.eclipse.cdt.internal.core.model.Parent.getChildren(Parent.java:57)
+	at org.eclipse.cdt.internal.core.model.CProject.getSourceRoots(CProject.java:471)
+	at org.eclipse.cdt.internal.core.model.CModelManager.create(CModelManager.java:342)
+	at org.eclipse.cdt.internal.core.model.CModelManager.create(CModelManager.java:270)
+	at org.eclipse.cdt.internal.core.model.DeltaProcessor.createElement(DeltaProcessor.java:90)
+	at org.eclipse.cdt.internal.core.model.DeltaProcessor.traverseDelta(DeltaProcessor.java:453)
+	at org.eclipse.cdt.internal.core.model.DeltaProcessor.traverseDelta(DeltaProcessor.java:471)
+	at org.eclipse.cdt.internal.core.model.DeltaProcessor.processResourceDelta(DeltaProcessor.java:433)
+	at org.eclipse.cdt.internal.core.model.CModelManager.resourceChanged(CModelManager.java:934)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:305)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:295)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:158)
+	at org.eclipse.core.internal.resources.Workspace.broadcastPostChange(Workspace.java:380)
+	at org.eclipse.core.internal.resources.Workspace.endOperation(Workspace.java:1502)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2306)
+	at org.eclipse.core.internal.events.NotificationManager$NotifyJob.run(NotificationManager.java:44)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 org.eclipse.core.jobs 4 2 2021-04-17 20:14:46.952
+!MESSAGE Thread Worker-156: Updating workspace has locks: OrderedLock (0) and is waiting for lock OrderedLock (66)
+!SUBENTRY 1 org.eclipse.core.jobs 4 2 2021-04-17 20:14:46.952
+!MESSAGE Thread ModalContext has locks: R/, MultiRule[P/I2I2-K22-000-Main,P/frdmk22f_adc16_continuous_edma,P/frdmk22f_adc16_interrupt,P/frdmk22f_adc16_low_power_async_edma,P/frdmk22f_adc16_low_power_async_edma_peripheral,P/frdmk22f_adc16_low_power_peripheral,P/frdmk22f_adc16_polling,P/frdmk22f_adc16_polling2,P/frdmk22f_bubble_peripheral,P/frdmk22f_cmp_interrupt,P/frdmk22f_cmp_polling,P/frdmk22f_cmsis_dspi_edma_b2b_transfer_master,P/frdmk22f_cmsis_dspi_edma_b2b_transfer_slave,P/frdmk22f_cmsis_dspi_int_b2b_transfer_master,P/frdmk22f_cmsis_dspi_int_b2b_transfer_slave,P/frdmk22f_cmsis_i2c_edma_b2b_transfer_master,P/frdmk22f_cmsis_i2c_edma_b2b_transfer_slave,P/frdmk22f_cmsis_i2c_int_b2b_transfer_master,P/frdmk22f_cmsis_i2c_int_b2b_transfer_slave,P/frdmk22f_cmsis_i2c_read_accel_value_transfer,P/frdmk22f_cmsis_lpuart_edma_transfer,P/frdmk22f_cmsis_lpuart_interrupt_transfer,P/frdmk22f_cmsis_uart_edma_transfer,P/frdmk22f_cmsis_uart_interrupt_transfer,P/frdmk22f_crc,P/frdmk22f_dac_adc_peripheral,P/frdmk22f_dac_basic,P/frdmk22f_dac_buffer_interrupt,P/frdmk22f_dac_continuous_pdb_edma,P/frdmk22f_dev_audio_generator_bm,P/frdmk22f_dev_audio_generator_freertos,P/frdmk22f_dev_audio_generator_lite_bm,P/frdmk22f_dev_cdc_vcom_bm,P/frdmk22f_dev_cdc_vcom_freertos,P/frdmk22f_dev_cdc_vcom_lite_bm,P/frdmk22f_dev_composite_cdc_msc_bm,P/frdmk22f_dev_composite_cdc_msc_freertos,P/frdmk22f_dev_composite_cdc_msc_lite_bm,P/frdmk22f_dev_composite_cdc_vcom_cdc_vcom_bm,P/frdmk22f_dev_composite_cdc_vcom_cdc_vcom_freertos,P/frdmk22f_dev_composite_cdc_vcom_cdc_vcom_lite_bm,P/frdmk22f_dev_composite_hid_audio_bm,P/frdmk22f_dev_composite_hid_audio_freertos,P/frdmk22f_dev_composite_hid_audio_lite_bm,P/frdmk22f_dev_composite_hid_mouse_hid_keyboard_bm,P/frdmk22f_dev_composite_hid_mouse_hid_keyboard_freertos,P/frdmk22f_dev_composite_hid_mouse_hid_keyboard_lite_bm,P/frdmk22f_dev_hid_generic_bm,P/frdmk22f_dev_hid_generic_freertos,P/frdmk22f_dev_hid_generic_lite_bm,P/frdmk22f_dev_hid_mouse_bm,P/frdmk22f_dev_hid_mouse_freertos,P/frdmk22f_dev_hid_mouse_freertos_static,P/frdmk22f_dev_hid_mouse_lite_bm,P/frdmk22f_dev_msc_ramdisk_bm,P/frdmk22f_dev_msc_ramdisk_freertos,P/frdmk22f_dev_msc_ramdisk_lite_bm,P/frdmk22f_dev_phdc_weighscale_bm,P/frdmk22f_dev_phdc_weighscale_freertos,P/frdmk22f_dev_phdc_weighscale_lite_bm,P/frdmk22f_dev_printer_virtual_plain_text_bm,P/frdmk22f_dev_printer_virtual_plain_text_freertos,P/frdmk22f_dev_printer_virtual_plain_text_lite_bm,P/frdmk22f_dev_suspend_resume_hid_mouse_bm,P/frdmk22f_dev_suspend_resume_hid_mouse_freertos,P/frdmk22f_dev_suspend_resume_hid_mouse_lite_bm,P/frdmk22f_dev_video_virtual_camera_bm,P/frdmk22f_dev_video_virtual_camera_freertos,P/frdmk22f_dev_video_virtual_camera_lite_bm,P/frdmk22f_dspi_edma_b2b_transfer_master,P/frdmk22f_dspi_edma_b2b_transfer_slave,P/frdmk22f_dspi_half_duplex_edma_master,P/frdmk22f_dspi_half_duplex_edma_slave,P/frdmk22f_dspi_half_duplex_int_master,P/frdmk22f_dspi_half_duplex_int_slave,P/frdmk22f_dspi_half_duplex_polling_master,P/frdmk22f_dspi_half_duplex_polling_slave,P/frdmk22f_dspi_interrupt,P/frdmk22f_dspi_interrupt_b2b_master,P/frdmk22f_dspi_interrupt_b2b_slave,P/frdmk22f_dspi_interrupt_b2b_transfer_master,P/frdmk22f_dspi_interrupt_b2b_transfer_slave,P/frdmk22f_dspi_polling_b2b_transfer_master,P/frdmk22f_dspi_polling_b2b_transfer_slave,P/frdmk22f_ecompass_peripheral,P/frdmk22f_edma_channel_link,P/frdmk22f_edma_interleave_transfer,P/frdmk22f_edma_memory_to_memory,P/frdmk22f_edma_ping_pong_transfer,P/frdmk22f_edma_scatter_gather,P/frdmk22f_edma_wrap_transfer,P/frdmk22f_emwin_gui_demo,P/frdmk22f_erpc_client_matrix_multiply_spi,P/frdmk22f_erpc_client_matrix_multiply_uart,P/frdmk22f_erpc_remote_control,P/frdmk22f_erpc_server_dac_adc,P/frdmk22f_erpc_server_matrix_multiply_spi,P/frdmk22f_erpc_server_matrix_multiply_uart,P/frdmk22f_ewm,P/frdmk22f_flashloader,P/frdmk22f_flashloader_loader,P/frdmk22f_fmstr_example_any,P/frdmk22f_fmstr_example_pdbdm,P/frdmk22f_fmstr_example_uart,P/frdmk22f_fmstr_example_usb_cdc,P/frdmk22f_freedom_bootloader,P/frdmk22f_freertos_dspi,P/frdmk22f_freertos_event,P/frdmk22f_freertos_generic,P/frdmk22f_freertos_hello,P/frdmk22f_freertos_i2c,P/frdmk22f_freertos_lpuart,P/frdmk22f_freertos_mutex,P/frdmk22f_freertos_queue,P/frdmk22f_freertos_segger_sysview,P/frdmk22f_freertos_sem,P/frdmk22f_freertos_sem_static,P/frdmk22f_freertos_swtimer,P/frdmk22f_freertos_tickless,P/frdmk22f_freertos_uart,P/frdmk22f_ftm_combine_pwm,P/frdmk22f_ftm_dual_edge_capture,P/frdmk22f_ftm_input_capture,P/frdmk22f_ftm_output_compare,P/frdmk22f_ftm_pdb_adc16,P/frdmk22f_ftm_pdb_adc16_peripheral,P/frdmk22f_ftm_pwm_twochannel,P/frdmk22f_ftm_quad_decoder,P/frdmk22f_ftm_quad_decoder_peripheral,P/frdmk22f_ftm_simple_pwm,P/frdmk22f_ftm_timer,P/frdmk22f_gpio_input_interrupt,P/frdmk22f_gpio_led_output,P/frdmk22f_hello_world,P/frdmk22f_hello_world_virtual_com,P/frdmk22f_host_audio_speaker_bm,P/frdmk22f_host_audio_speaker_freertos,P/frdmk22f_host_cdc_bm,P/frdmk22f_host_cdc_freertos,P/frdmk22f_host_hid_generic_bm,P/frdmk22f_host_hid_generic_freertos,P/frdmk22f_host_hid_mouse_bm,P/frdmk22f_host_hid_mouse_freertos,P/frdmk22f_host_hid_mouse_keyboard_bm,P/frdmk22f_host_hid_mouse_keyboard_freertos,P/frdmk22f_host_msd_command_bm,P/frdmk22f_host_msd_command_freertos,P/frdmk22f_host_msd_fatfs_bm,P/frdmk22f_host_msd_fatfs_freertos,P/frdmk22f_host_phdc_manager_bm,P/frdmk22f_host_phdc_manager_freertos,P/frdmk22f_host_printer_plain_text_bm,P/frdmk22f_host_printer_plain_text_freertos,P/frdmk22f_host_suspend_resume_hid_mouse_bm,P/frdmk22f_host_suspend_resume_hid_mouse_freertos,P/frdmk22f_i2c_edma_b2b_transfer_master,P/frdmk22f_i2c_edma_b2b_transfer_slave,P/frdmk22f_i2c_interrupt,P/frdmk22f_i2c_interrupt_b2b_transfer_master,P/frdmk22f_i2c_interrupt_b2b_transfer_slave,P/frdmk22f_i2c_polling_b2b_transfer_master,P/frdmk22f_i2c_polling_b2b_transfer_slave,P/frdmk22f_i2c_read_accel_value_transfer,P/frdmk22f_led_blinky,P/frdmk22f_led_control_bm,P/frdmk22f_led_control_freertos,P/frdmk22f_led_demo_freedom_0000,P/frdmk22f_led_demo_freedom_a000,P/frdmk22f_littlevgl_demo_widgets,P/frdmk22f_littlevgl_demo_widgets_bm,P/frdmk22f_littlevgl_guider,P/frdmk22f_log_bm,P/frdmk22f_log_freertos,P/frdmk22f_lptmr,P/frdmk22f_lpuart_edma_rb_transfer,P/frdmk22f_lpuart_edma_transfer,P/frdmk22f_lpuart_interrupt,P/frdmk22f_lpuart_interrupt_rb_transfer,P/frdmk22f_lpuart_interrupt_transfer,P/frdmk22f_lpuart_polling,P/frdmk22f_mcg_fee_blpe,P/frdmk22f_mcg_fee_blpi,P/frdmk22f_mcg_fei_blpi,P/frdmk22f_mcg_pee_blpe,P/frdmk22f_mcg_pee_blpi,P/frdmk22f_pdb_adc16_trigger,P/frdmk22f_pdb_dac_trigger,P/frdmk22f_pdb_delay_interrupt,P/frdmk22f_pflash,P/frdmk22f_pit,P/frdmk22f_power_manager,P/frdmk22f_power_mode_switch,P/frdmk22f_rnga_random,P/frdmk22f_rtc,P/frdmk22f_rtc_func,P/frdmk22f_rtc_func_peripheral,P/frdmk22f_shell,P/frdmk22f_uart_9bit_interrupt_transfer,P/frdmk22f_uart_edma_transfer,P/frdmk22f_uart_interrupt,P/frdmk22f_uart_interrupt_rb_transfer,P/frdmk22f_uart_interrupt_transfer,P/frdmk22f_uart_polling,P/frdmk22f_vref_example,P/frdmk22f_wdog], OrderedLock (66) and is waiting for lock OrderedLock (0)
+
+!ENTRY com.nxp.swtools.kex.api.internal.HttpHelper 4 0 2021-04-17 20:15:15.956
+!MESSAGE Error connecting to {0} with error code {1}
+!SESSION 2021-04-19 15:49:26.637 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_265
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2021-04-19 15:49:40.414
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2021-04-19 15:49:40.414
+!MESSAGE A conflict occurred for ALT+CTRL+SHIFT+L:
+Binding(ALT+CTRL+SHIFT+L,
+	ParameterizedCommand(Command(com.nxp.mcuxpresso.core.debug.linkserver.ui.CRTCApplicationLaunchShortcut,MCUXpresso IDE LinkServer (inc. CMSIS-DAP) probes,
+		,
+		Category(org.eclipse.core.commands.categories.autogenerated,Uncategorized,Commands that were either auto-generated or have no category,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@2e847e71,
+		[Parameter(com.nxp.mcuxpresso.core.debug.support.shortcut.parameter,parameter,null,true)],,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+SHIFT+L,
+	ParameterizedCommand(Command(org.eclipse.text.quicksearch.commands.quicksearchCommand,Quick Search,
+		,
+		Category(org.eclipse.text.quicksearch.commands.category,Quick Search,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@79636080,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2021-04-19 15:49:40.414
+!MESSAGE A conflict occurred for CTRL+U:
+Binding(CTRL+U,
+	ParameterizedCommand(Command(com.nxp.swtools.clocks.commands.unlockAll,Unlock All Settings,
+		,
+		Category(org.eclipse.core.commands.categories.autogenerated,Uncategorized,Commands that were either auto-generated or have no category,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@6d87253e,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+U,
+	ParameterizedCommand(Command(org.eclipse.jdt.debug.ui.commands.Execute,Execute,
+		Evaluate selected text,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@4e31b64d,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.egit.ui 2 0 2021-04-19 15:50:08.304
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\TeddyP'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.crt.log 1 0 2021-04-19 15:50:17.978
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-19 15:50:18.510
+!MESSAGE RedlinkServer telnet session connected on port 3025->54962 @ 127.0.0.1
+
+!ENTRY com.nxp.mcuxpresso.core.debug 1 0 2021-04-19 15:50:31.274
+!MESSAGE Telnet session connected on port 3330->54977 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-19 15:50:33.570
+!MESSAGE Generic cortexM4 ROM base address will be used: e00ff000
+
+!ENTRY com.crt.log 1 0 2021-04-19 15:51:26.342
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-19 15:51:26.851
+!MESSAGE RedlinkServer telnet session connected on port 3025->54988 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-19 15:52:37.096
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-19 15:52:37.608
+!MESSAGE RedlinkServer telnet session connected on port 3025->55004 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-19 15:54:03.269
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-19 15:54:03.785
+!MESSAGE RedlinkServer telnet session connected on port 3025->55015 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-19 15:57:38.834
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-19 15:57:39.347
+!MESSAGE RedlinkServer telnet session connected on port 3025->55177 @ 127.0.0.1
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 4 0 2021-04-19 15:58:41.712
+!MESSAGE Unable to parse ProbeList output to get probe ref count: []
+
+!ENTRY com.crt.log 1 0 2021-04-19 16:19:00.051
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-19 16:19:00.569
+!MESSAGE RedlinkServer telnet session connected on port 3025->55344 @ 127.0.0.1
+
+!ENTRY org.eclipse.cdt.core 1 0 2021-04-20 12:50:15.199
+!MESSAGE Indexed 'I2I-0001' (149 sources, 186 headers) in 7.9 sec: 30,318 declarations; 132,866 references; 3 unresolved inclusions; 134 syntax errors; 68 unresolved names (0.042%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2021-04-20 13:49:17.058
+!MESSAGE Indexed 'I2I-0001' (149 sources, 186 headers) in 2.73 sec: 30,176 declarations; 131,364 references; 3 unresolved inclusions; 134 syntax errors; 29 unresolved names (0.018%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2021-04-20 13:49:54.095
+!MESSAGE Indexed 'I2I-0001' (149 sources, 186 headers) in 2.49 sec: 30,319 declarations; 132,899 references; 3 unresolved inclusions; 134 syntax errors; 36 unresolved names (0.022%)
+
+!ENTRY com.crt.log 1 0 2021-04-20 13:58:12.678
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 13:58:13.188
+!MESSAGE RedlinkServer telnet session connected on port 3025->64999 @ 127.0.0.1
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 4 0 2021-04-20 13:59:06.215
+!MESSAGE Unable to parse ProbeList output to get probe ref count: []
+
+!ENTRY com.crt.log 1 0 2021-04-20 13:59:41.737
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 13:59:42.245
+!MESSAGE RedlinkServer telnet session connected on port 3025->65021 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:00:37.343
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:00:37.848
+!MESSAGE RedlinkServer telnet session connected on port 3025->65029 @ 127.0.0.1
+
+!ENTRY com.nxp.swtools.kex.api.internal.HttpHelper 4 0 2021-04-20 14:02:54.386
+!MESSAGE Error connecting to {0} with error code {1}
+!SESSION 2021-04-20 14:03:44.281 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_265
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.jface 2 0 2021-04-20 14:03:56.691
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2021-04-20 14:03:56.691
+!MESSAGE A conflict occurred for ALT+CTRL+SHIFT+L:
+Binding(ALT+CTRL+SHIFT+L,
+	ParameterizedCommand(Command(com.nxp.mcuxpresso.core.debug.linkserver.ui.CRTCApplicationLaunchShortcut,MCUXpresso IDE LinkServer (inc. CMSIS-DAP) probes,
+		,
+		Category(org.eclipse.core.commands.categories.autogenerated,Uncategorized,Commands that were either auto-generated or have no category,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@5a654e05,
+		[Parameter(com.nxp.mcuxpresso.core.debug.support.shortcut.parameter,parameter,null,true)],,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+SHIFT+L,
+	ParameterizedCommand(Command(org.eclipse.text.quicksearch.commands.quicksearchCommand,Quick Search,
+		,
+		Category(org.eclipse.text.quicksearch.commands.category,Quick Search,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@121dac1a,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2021-04-20 14:03:56.691
+!MESSAGE A conflict occurred for CTRL+U:
+Binding(CTRL+U,
+	ParameterizedCommand(Command(com.nxp.swtools.clocks.commands.unlockAll,Unlock All Settings,
+		,
+		Category(org.eclipse.core.commands.categories.autogenerated,Uncategorized,Commands that were either auto-generated or have no category,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@6d946eee,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+U,
+	ParameterizedCommand(Command(org.eclipse.jdt.debug.ui.commands.Execute,Execute,
+		Evaluate selected text,
+		Category(org.eclipse.debug.ui.category.run,Run/Debug,Run/Debug command category,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@23dc70c1,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.egit.ui 2 0 2021-04-20 14:04:18.765
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\TeddyP'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:04:40.973
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:04:40.979
+!MESSAGE RedlinkServer telnet session connected on port 3025->65089 @ 127.0.0.1
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 4 0 2021-04-20 14:04:50.846
+!MESSAGE Unable to parse ProbeList output to get probe ref count: []
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:04:58.390
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:04:58.898
+!MESSAGE RedlinkServer telnet session connected on port 3025->65117 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:10:25.444
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:10:25.952
+!MESSAGE RedlinkServer telnet session connected on port 3025->65145 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:19:14.028
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:19:14.533
+!MESSAGE RedlinkServer telnet session connected on port 3025->65201 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:20:10.200
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:20:10.704
+!MESSAGE RedlinkServer telnet session connected on port 3025->65210 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:21:04.286
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:21:04.795
+!MESSAGE RedlinkServer telnet session connected on port 3025->65215 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:39:33.640
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:39:34.145
+!MESSAGE RedlinkServer telnet session connected on port 3025->65355 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:41:41.691
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:41:42.208
+!MESSAGE RedlinkServer telnet session connected on port 3025->65377 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:49:13.521
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:49:14.029
+!MESSAGE RedlinkServer telnet session connected on port 3025->65513 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:52:07.960
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:52:08.472
+!MESSAGE RedlinkServer telnet session connected on port 3025->65528 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 14:53:49.553
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 14:53:50.063
+!MESSAGE RedlinkServer telnet session connected on port 3025->49155 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:12:02.819
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:12:03.335
+!MESSAGE RedlinkServer telnet session connected on port 3025->49336 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:12:50.547
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:12:51.062
+!MESSAGE RedlinkServer telnet session connected on port 3025->49340 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:13:34.587
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:13:35.103
+!MESSAGE RedlinkServer telnet session connected on port 3025->49348 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:16:53.612
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:16:54.125
+!MESSAGE RedlinkServer telnet session connected on port 3025->49371 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:35:45.644
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:35:46.155
+!MESSAGE RedlinkServer telnet session connected on port 3025->49492 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:38:57.514
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:38:58.030
+!MESSAGE RedlinkServer telnet session connected on port 3025->49518 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:40:52.072
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:40:52.581
+!MESSAGE RedlinkServer telnet session connected on port 3025->49535 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:42:16.915
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:42:17.419
+!MESSAGE RedlinkServer telnet session connected on port 3025->49549 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:43:07.353
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:43:07.869
+!MESSAGE RedlinkServer telnet session connected on port 3025->49557 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:44:10.720
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:44:11.238
+!MESSAGE RedlinkServer telnet session connected on port 3025->49568 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:49:20.402
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:49:20.911
+!MESSAGE RedlinkServer telnet session connected on port 3025->49604 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:55:37.867
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:55:38.383
+!MESSAGE RedlinkServer telnet session connected on port 3025->49726 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:56:57.176
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:56:57.690
+!MESSAGE RedlinkServer telnet session connected on port 3025->49739 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:58:26.443
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:58:26.949
+!MESSAGE RedlinkServer telnet session connected on port 3025->49747 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 15:59:52.988
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 15:59:53.492
+!MESSAGE RedlinkServer telnet session connected on port 3025->49758 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:02:13.132
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:02:13.645
+!MESSAGE RedlinkServer telnet session connected on port 3025->49783 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:03:30.669
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:03:31.173
+!MESSAGE RedlinkServer telnet session connected on port 3025->49802 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:05:57.529
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:05:58.042
+!MESSAGE RedlinkServer telnet session connected on port 3025->49820 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:06:36.982
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:06:37.494
+!MESSAGE RedlinkServer telnet session connected on port 3025->49832 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:07:28.433
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:07:28.945
+!MESSAGE RedlinkServer telnet session connected on port 3025->49841 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:07:58.241
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:07:58.751
+!MESSAGE RedlinkServer telnet session connected on port 3025->49844 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:18:32.124
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:18:32.642
+!MESSAGE RedlinkServer telnet session connected on port 3025->49922 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:21:02.991
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:21:03.494
+!MESSAGE RedlinkServer telnet session connected on port 3025->49947 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:22:02.153
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:22:02.661
+!MESSAGE RedlinkServer telnet session connected on port 3025->49953 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:23:36.897
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:23:37.410
+!MESSAGE RedlinkServer telnet session connected on port 3025->49972 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:25:46.423
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:25:46.929
+!MESSAGE RedlinkServer telnet session connected on port 3025->49988 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:26:33.847
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:26:34.355
+!MESSAGE RedlinkServer telnet session connected on port 3025->49993 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:29:39.268
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:29:39.783
+!MESSAGE RedlinkServer telnet session connected on port 3025->50034 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:30:20.413
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:30:20.927
+!MESSAGE RedlinkServer telnet session connected on port 3025->50040 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:31:21.757
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:31:22.270
+!MESSAGE RedlinkServer telnet session connected on port 3025->50046 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:32:14.184
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:32:14.696
+!MESSAGE RedlinkServer telnet session connected on port 3025->50053 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:34:05.774
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:34:06.279
+!MESSAGE RedlinkServer telnet session connected on port 3025->50070 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:35:22.273
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:35:22.787
+!MESSAGE RedlinkServer telnet session connected on port 3025->50079 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:36:03.648
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:36:04.163
+!MESSAGE RedlinkServer telnet session connected on port 3025->50085 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:40:28.218
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:40:28.734
+!MESSAGE RedlinkServer telnet session connected on port 3025->50111 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:41:55.568
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:41:56.076
+!MESSAGE RedlinkServer telnet session connected on port 3025->50125 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:42:47.447
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:42:47.953
+!MESSAGE RedlinkServer telnet session connected on port 3025->50130 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 16:43:39.874
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 16:43:40.379
+!MESSAGE RedlinkServer telnet session connected on port 3025->50141 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 17:01:35.608
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 17:01:36.122
+!MESSAGE RedlinkServer telnet session connected on port 3025->50257 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 17:02:12.133
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 17:02:12.644
+!MESSAGE RedlinkServer telnet session connected on port 3025->50273 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 17:39:09.456
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 17:39:09.972
+!MESSAGE RedlinkServer telnet session connected on port 3025->50557 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 17:40:45.906
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 17:40:46.418
+!MESSAGE RedlinkServer telnet session connected on port 3025->50570 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 17:41:19.391
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 17:41:19.901
+!MESSAGE RedlinkServer telnet session connected on port 3025->50574 @ 127.0.0.1
+
+!ENTRY com.nxp.mcuxpresso.core.debug 1 0 2021-04-20 17:41:21.723
+!MESSAGE Telnet session connected on port 3330->50579 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 17:41:33.829
+!MESSAGE Generic cortexM4 ROM base address will be used: e00ff000
+
+!ENTRY com.crt.log 1 0 2021-04-20 17:42:36.400
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 17:42:36.916
+!MESSAGE RedlinkServer telnet session connected on port 3025->50587 @ 127.0.0.1
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 4 0 2021-04-20 17:42:36.917
+!MESSAGE Unable to parse ProbeList output to get probe ref count: []
+
+!ENTRY com.crt.log 1 0 2021-04-20 17:43:32.403
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 17:43:32.908
+!MESSAGE RedlinkServer telnet session connected on port 3025->50603 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 17:44:18.980
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 17:44:19.492
+!MESSAGE RedlinkServer telnet session connected on port 3025->50611 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 17:45:54.498
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 17:45:55.004
+!MESSAGE RedlinkServer telnet session connected on port 3025->50627 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 17:46:45.815
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 17:46:46.326
+!MESSAGE RedlinkServer telnet session connected on port 3025->50634 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 20:40:29.494
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 20:40:30.008
+!MESSAGE RedlinkServer telnet session connected on port 3025->52606 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:17:08.686
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:17:09.203
+!MESSAGE RedlinkServer telnet session connected on port 3025->53360 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:17:47.815
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:17:48.331
+!MESSAGE RedlinkServer telnet session connected on port 3025->53368 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:19:07.120
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:19:07.635
+!MESSAGE RedlinkServer telnet session connected on port 3025->53387 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:20:38.273
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:20:38.777
+!MESSAGE RedlinkServer telnet session connected on port 3025->53406 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:21:36.520
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:21:37.031
+!MESSAGE RedlinkServer telnet session connected on port 3025->53432 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:22:16.895
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:22:17.408
+!MESSAGE RedlinkServer telnet session connected on port 3025->53440 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:22:50.944
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:22:51.455
+!MESSAGE RedlinkServer telnet session connected on port 3025->53446 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:23:09.929
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:23:10.443
+!MESSAGE RedlinkServer telnet session connected on port 3025->53449 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:37:13.330
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:37:13.838
+!MESSAGE RedlinkServer telnet session connected on port 3025->53570 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:39:46.582
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:39:47.099
+!MESSAGE RedlinkServer telnet session connected on port 3025->53592 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:50:13.943
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:50:14.457
+!MESSAGE RedlinkServer telnet session connected on port 3025->53683 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 21:51:32.598
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 21:51:33.107
+!MESSAGE RedlinkServer telnet session connected on port 3025->53696 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:05:26.822
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:05:27.335
+!MESSAGE RedlinkServer telnet session connected on port 3025->53820 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:11:29.770
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:11:30.286
+!MESSAGE RedlinkServer telnet session connected on port 3025->53883 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:14:43.483
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:14:43.996
+!MESSAGE RedlinkServer telnet session connected on port 3025->53975 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:16:29.569
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:16:30.077
+!MESSAGE RedlinkServer telnet session connected on port 3025->53987 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:31:34.039
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:31:34.553
+!MESSAGE RedlinkServer telnet session connected on port 3025->54151 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:32:32.653
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:32:33.158
+!MESSAGE RedlinkServer telnet session connected on port 3025->54157 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:35:30.745
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:35:31.259
+!MESSAGE RedlinkServer telnet session connected on port 3025->54194 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:37:11.974
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:37:12.486
+!MESSAGE RedlinkServer telnet session connected on port 3025->54208 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:38:06.981
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:38:07.495
+!MESSAGE RedlinkServer telnet session connected on port 3025->54215 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:40:14.440
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:40:14.952
+!MESSAGE RedlinkServer telnet session connected on port 3025->54238 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:49:58.502
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:49:59.009
+!MESSAGE RedlinkServer telnet session connected on port 3025->54325 @ 127.0.0.1
+
+!ENTRY com.crt.log 1 0 2021-04-20 22:59:05.951
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2021-04-20 22:59:06.464
+!MESSAGE RedlinkServer telnet session connected on port 3025->54412 @ 127.0.0.1
+
+!ENTRY com.nxp.swtools.kex.api.internal.HttpHelper 4 0 2021-04-21 11:08:58.428
+!MESSAGE Error connecting to {0} with error code {1}
