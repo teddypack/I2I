@@ -35,10 +35,12 @@ static void ta_event_cb(lv_obj_t * ta, lv_event_t e);
 static void kb_event_cb(lv_obj_t * ta, lv_event_t e);
 static void batterybar_anim(lv_task_t * t);
 static void bar_anim(lv_task_t * t);
+static void priority_anim(lv_task_t * t);
 static void arc_anim(lv_obj_t * arc, lv_anim_value_t value);
 static void linemeter_anim(lv_obj_t * linemeter, lv_anim_value_t value);
 static void gauge_anim(lv_obj_t * gauge, lv_anim_value_t value);
 static void table_event_cb(lv_obj_t * table, lv_event_t e);
+static void event_handler(lv_obj_t * table, lv_event_t e);
 #if LV_USE_THEME_MATERIAL
 static void color_chg_event_cb(lv_obj_t * sw, lv_event_t e);
 #endif
@@ -211,7 +213,7 @@ static void status_create(lv_obj_t * parent)
     lv_obj_set_style_local_margin_bottom(batterybar, LV_BAR_PART_BG, LV_STATE_DEFAULT, 0);
     lv_obj_align(batterybar, NULL, LV_ALIGN_IN_TOP_MID, 0, 10);
 
-    lv_task_create(batterybar_anim, 100, LV_TASK_PRIO_LOW, batterybar);
+
 //********************************************************************************************************
     //create container for Priority Info
     lv_obj_t * priority01 = lv_cont_create(parent, NULL);
@@ -235,6 +237,60 @@ static void status_create(lv_obj_t * parent)
     lv_table_set_cell_value(table2, 4, 0, " ");
 
     lv_table_set_cell_value(table2, 0, 1, "Priority");
+
+    lv_task_create(batterybar_anim, 100, LV_TASK_PRIO_LOW, batterybar);
+    lv_task_create(priority_anim, 100, LV_TASK_PRIO_LOW, table2);
+
+
+}
+
+static void settings_create(lv_obj_t * parent)
+{
+    lv_page_set_scrl_layout(parent, LV_LAYOUT_PRETTY_MID);
+
+    lv_disp_size_t disp_size = lv_disp_get_size_category(NULL);
+    lv_coord_t grid_h = lv_page_get_height_grid(parent, 1, 1);
+    lv_coord_t grid_w = lv_page_get_width_grid(parent, 2, 1);
+
+    lv_obj_t * settings01 = lv_cont_create(parent, NULL);
+    lv_obj_set_drag_parent(settings01, true);
+
+	lv_obj_set_click(settings01, false);
+	lv_obj_set_style_local_bg_opa(settings01, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
+	lv_obj_set_style_local_border_opa(settings01, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
+	lv_obj_set_style_local_pad_left(settings01, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
+	lv_obj_set_style_local_pad_right(settings01, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
+	lv_obj_set_style_local_pad_top(settings01, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
+	lv_obj_set_size(settings01, LV_MATH_MIN(grid_h, grid_w), LV_MATH_MIN(grid_h, grid_w));
+	lv_cont_set_layout(settings01, LV_LAYOUT_PRETTY_TOP);
+
+    lv_obj_t * dd2 = lv_dropdown_create(settings01, NULL);
+    lv_obj_add_style(dd2, LV_CONT_PART_MAIN, &style_box);
+    lv_obj_set_style_local_value_str(dd2, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, "Select Output Priority");
+    lv_obj_set_width(dd2, lv_obj_get_width_grid(settings01, disp_size <= LV_DISP_SIZE_SMALL ? 1 : 2, 1));
+    lv_dropdown_set_options(dd2, "None\n1-2-3\n1-3-2\n2-1-3\n2-3-1\n3-1-2\n3-2-1");
+    lv_obj_set_event_cb(dd2, event_handler);
+}
+
+
+static void event_handler(lv_obj_t* obj, lv_event_t event)
+{
+    if (event == LV_EVENT_VALUE_CHANGED) {
+    	priorityindex = lv_dropdown_get_selected(obj);
+	}
+}
+
+//static void debug_create(lv_obj_t * parent)
+//{
+//create container for Priority Info
+
+
+//}
+
+static void priority_anim(lv_task_t * t)
+{
+    lv_obj_t * table2 = t->user_data;
+
     if (priorityindex == 0)
     {
         lv_table_set_cell_value(table2, 1, 1, "No Priority Set");
@@ -277,47 +333,8 @@ static void status_create(lv_obj_t * parent)
         lv_table_set_cell_value(table2, 2, 1, "Output 2");
         lv_table_set_cell_value(table2, 3, 1, "Output 1");
     }
-
-
-
-    //lv_task_create(batterybar_anim, 100, LV_TASK_PRIO_LOW, batterybar);
-
-
 }
 
-static void settings_create(lv_obj_t * parent)
-{
-    lv_page_set_scrl_layout(parent, LV_LAYOUT_PRETTY_MID);
-
-    lv_disp_size_t disp_size = lv_disp_get_size_category(NULL);
-    lv_coord_t grid_h = lv_page_get_height_grid(parent, 1, 1);
-    lv_coord_t grid_w = lv_page_get_width_grid(parent, 2, 1);
-
-    lv_obj_t * settings01 = lv_cont_create(parent, NULL);
-    lv_obj_set_drag_parent(settings01, true);
-
-	lv_obj_set_click(settings01, false);
-	lv_obj_set_style_local_bg_opa(settings01, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-	lv_obj_set_style_local_border_opa(settings01, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-	lv_obj_set_style_local_pad_left(settings01, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
-	lv_obj_set_style_local_pad_right(settings01, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
-	lv_obj_set_style_local_pad_top(settings01, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
-	lv_obj_set_size(settings01, LV_MATH_MIN(grid_h, grid_w), LV_MATH_MIN(grid_h, grid_w));
-	lv_cont_set_layout(settings01, LV_LAYOUT_PRETTY_TOP);
-
-    lv_obj_t * dd2 = lv_dropdown_create(settings01, NULL);
-    lv_obj_add_style(dd2, LV_CONT_PART_MAIN, &style_box);
-    lv_obj_set_style_local_value_str(dd2, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, "Select Output Priority");
-    lv_obj_set_width(dd2, lv_obj_get_width_grid(settings01, disp_size <= LV_DISP_SIZE_SMALL ? 1 : 2, 1));
-    lv_dropdown_set_options(dd2, "None\n1-2-3\n1-3-2\n2-1-3\n2-3-1\n3-1-2\n3-2-1");
-}
-
-//static void debug_create(lv_obj_t * parent)
-//{
-//create container for Priority Info
-
-
-//}
 
 static void batterybar_anim(lv_task_t * t)
 {

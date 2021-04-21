@@ -72,11 +72,11 @@ int main(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    led1active = 1;
-    led2active = 0;
-    led3active = 1;
-    batterycharge = 69;
-    priorityindex = 3;
+    led1active = 0;
+    led2active = 1;
+    led3active = 0;
+    batterycharge = 40;
+    priorityindex = 0;
 
     stat = xTaskCreate(AppTask, "littlevgl", configMINIMAL_STACK_SIZE + 800, NULL, tskIDLE_PRIORITY + 2, NULL);
 
