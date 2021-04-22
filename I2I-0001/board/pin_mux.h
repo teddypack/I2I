@@ -77,6 +77,24 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_GPIOA12_PIN_MASK (1U << 12U)      /*!<@brief PORT pin mask */
                                                          /* @} */
 
+/*! @name PORTC11 (number 56), J2[7]/I2C1_SDA
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITPINS_RF_CE_PORT PORTC                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINS_RF_CE_PIN 11U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINS_RF_CE_PIN_MASK (1U << 11U)      /*!<@brief PORT pin mask */
+                                                       /* @} */
+
+/*! @name PORTC1 (number 44), J24[6]/LLWU_P6/ADC0_SE15/PUSH_BUTTON2
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITPINS_SW2_PORT PORTC               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINS_SW2_PIN 1U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINS_SW2_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
+                                                    /* @} */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *

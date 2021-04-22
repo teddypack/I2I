@@ -24,26 +24,26 @@ static volatile bool s_lvgl_initialized = false;
 #define ADC16_BASE1          ADC1  	//defines base 1 to chip ADC 1
 #define ADC16_CHANNEL_GROUP0 0U		//defines group 0 which signifies ADC user group A
 #define ADC16_CHANNEL_GROUP1 1U		//defines group 1 which signifies ADC user group B
-#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8 for battery voltage reading
+#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC0_SE8 for battery voltage reading
 
 //below ADCs are for Spencer's stuff
-#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
-#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
-#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
-#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
-#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
-#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
-#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
-#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
+#define ADC16_USER_CHANNEL1 14U      //define channel 1 to ADC0_SE14
+#define ADC16_USER_CHANNEL2 7U      //define channel 2 to ADC1_SE7b
+#define ADC16_USER_CHANNEL3 9U      //define channel 3 to ADC0_SE9
+#define ADC16_USER_CHANNEL4 15U      //define channel 4 to ADC0_SE15
+#define ADC16_USER_CHANNEL5 4U      //define channel 5 to ADC0_SE4b
+#define ADC16_USER_CHANNEL6 13U      //define channel 6 to ADC0_SE13
+#define ADC16_USER_CHANNEL7 12U      //define channel 7 to ADC0_SE12
+#define ADC16_USER_CHANNEL8 6U      //define channel 8 to ADC1_SE6b
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
 
 const uint32_t g_Adc16_12bitFullRange = 4096U;
-int led1active = 0;
+int led1active = 1;
 int led2active = 0;
-int led3active = 0;
+int led3active = 1;
 int batterycharge = 0;
 int priorityindex = 0;
 
@@ -293,6 +293,8 @@ int ConvertADCVBatteryValue(void)
 
 static void MeasurementTask(void *param)
   {
+	double pow(double x, double y);
+	double sqrt(double x);
 	adc16_config_t adc16ConfigStruct;
 	adc16_channel_config_t adc16ChannelConfigStruct;
 
@@ -301,10 +303,10 @@ static void MeasurementTask(void *param)
     adc16ConfigStruct.referenceVoltageSource = kADC16_ReferenceVoltageSourceValt;
 	#endif
     ADC16_Init(ADC16_BASE0, &adc16ConfigStruct);
-    ADC16_Init(ADC16_BASE1, &adc16ConfigStruct);
+    //ADC16_Init(ADC16_BASE1, &adc16ConfigStruct);
 
     ADC16_EnableHardwareTrigger(ADC16_BASE0, false); /* Make sure the software trigger is used. */
-    ADC16_EnableHardwareTrigger(ADC16_BASE1, false); /* Make sure the software trigger is used. */
+    //ADC16_EnableHardwareTrigger(ADC16_BASE1, false); /* Make sure the software trigger is used. */
 
 	#if defined(FSL_FEATURE_ADC16_HAS_CALIBRATION) && FSL_FEATURE_ADC16_HAS_CALIBRATION
     if (kStatus_Success == ADC16_DoAutoCalibration(ADC0))
@@ -315,14 +317,14 @@ static void MeasurementTask(void *param)
     {
         PRINTF("ADC16_DoAutoCalibration() on ACO0 Failed.\r\n");
     }
-    if (kStatus_Success == ADC16_DoAutoCalibration(ADC1))
-    {
-        PRINTF("ADC16_DoAutoCalibration() on ACO1 Done.\r\n");
-    }
-    else
-    {
-        PRINTF("ADC16_DoAutoCalibration() on ACO1 Failed.\r\n");
-    }
+   // if (kStatus_Success == ADC16_DoAutoCalibration(ADC1))
+    //{
+    //    PRINTF("ADC16_DoAutoCalibration() on ACO1 Done.\r\n");
+   // }
+   // else
+   // {
+   //     PRINTF("ADC16_DoAutoCalibration() on ACO1 Failed.\r\n");
+   // }
 	#endif /* FSL_FEATURE_ADC16_HAS_CALIBRATION */
     PRINTF("ADC Full Range: %d\r\n", g_Adc16_12bitFullRange);
     PRINTF("Press any key to get user channel's ADC value ...\r\n");
@@ -332,6 +334,15 @@ static void MeasurementTask(void *param)
     adc16ChannelConfigStruct.enableDifferentialConversion = false;
 #endif /* FSL_FEATURE_ADC16_HAS_DIFF_MODE */
 
+    int i = 0;
+    int sumACVIn = 0;
+    int sumACVOut = 0;
+    int sumACIIn = 0;
+    int sumVdc = 0;
+    int sumIdc = 0;
+    int sumIoutfinal1 = 0;
+    int sumIoutfinal2 = 0;
+    int sumIoutfinal3 = 0;
 
 	for( ;; )
 	{
@@ -347,10 +358,16 @@ static void MeasurementTask(void *param)
         ConvertADCVBatteryValue();
 
 
-		int j;
-        int k = 0;
-        for(j=0;j<262144;j++);
-        k++;
+		//AC Input Voltage Values (24Vac) over base 0 channel group 0 port 14 (SE14)
+
+		adc16ChannelConfigStruct.channelNumber = ADC16_USER_CHANNEL3;
+		ADC16_SetChannelConfig(ADC16_BASE0, ADC16_CHANNEL_GROUP0, &adc16ChannelConfigStruct);
+		while (0U == (kADC16_ChannelConversionDoneFlag &
+				  ADC16_GetChannelStatusFlags(ADC16_BASE0, ADC16_CHANNEL_GROUP0)))
+		{
+		}
+		adcin3v = ADC16_GetChannelConversionValue(ADC16_BASE0, ADC16_CHANNEL_GROUP0);
+
 	}
 
 	/* Tasks must not attempt to return from their implementing
@@ -367,47 +384,101 @@ static void DecisionMaker(void *param)
 
 	for( ;; )
 	{
-		if (priorityindex == 0)
+		if (priorityindex == 0) //no priority
 		{
-			GPIO_PinWrite(GPIOA, 5, 1);
-			GPIO_PinWrite(GPIOA, 13, 1);
 			GPIO_PinWrite(GPIOA, 12, 1);
-		}
-		else if (priorityindex == 1)
-		{
-			GPIO_PinWrite(GPIOA, 5, 0);
-			GPIO_PinWrite(GPIOA, 13, 0);
-			GPIO_PinWrite(GPIOA, 12, 0);
-		}
-		else if (priorityindex == 2)
-		{
-			GPIO_PinWrite(GPIOA, 5, 0);
-			GPIO_PinWrite(GPIOA, 13, 0);
-			GPIO_PinWrite(GPIOA, 12, 1);
-		}
-		else if (priorityindex == 3)
-		{
-			GPIO_PinWrite(GPIOA, 5, 0);
 			GPIO_PinWrite(GPIOA, 13, 1);
-			GPIO_PinWrite(GPIOA, 12, 0);
-		}
-		else if (priorityindex == 4)
-		{
 			GPIO_PinWrite(GPIOA, 5, 1);
-			GPIO_PinWrite(GPIOA, 13, 0);
-			GPIO_PinWrite(GPIOA, 12, 0);
 		}
-		else if (priorityindex == 5)
+		else if (priorityindex == 1) //1-2-3
 		{
-			GPIO_PinWrite(GPIOA, 5, 1);
-			GPIO_PinWrite(GPIOA, 13, 0);
 			GPIO_PinWrite(GPIOA, 12, 1);
-		}
-		else if (priorityindex == 6)
-		{
-			GPIO_PinWrite(GPIOA, 5, 1);
 			GPIO_PinWrite(GPIOA, 13, 1);
-			GPIO_PinWrite(GPIOA, 12, 0);
+			if (adcin3v > 1000)
+				{
+					led3active = 1;
+					GPIO_PinWrite(GPIOA, 5, 1);
+				}
+				else
+				{
+					led3active = 0;
+					GPIO_PinWrite(GPIOA, 5, 0);
+				}
+		}
+		else if (priorityindex == 2) //1-3-2
+		{
+			GPIO_PinWrite(GPIOA, 12, 1);
+			if (adcin3v > 1000)
+				{
+					led3active = 1;
+					GPIO_PinWrite(GPIOA, 13, 1);
+				}
+				else
+				{
+					led3active = 0;
+					GPIO_PinWrite(GPIOA, 13, 0);
+				}
+			GPIO_PinWrite(GPIOA, 5, 1);
+		}
+		else if (priorityindex == 3) //2-1-3
+		{
+			GPIO_PinWrite(GPIOA, 12, 1);
+			GPIO_PinWrite(GPIOA, 13, 1);
+			if (adcin3v > 1000)
+				{
+					led3active = 1;
+					GPIO_PinWrite(GPIOA, 5, 1);
+				}
+				else
+				{
+					led3active = 0;
+					GPIO_PinWrite(GPIOA, 5, 0);
+				}
+		}
+		else if (priorityindex == 4) //2-3-1
+		{
+			if (adcin3v > 1000)
+				{
+					led3active = 1;
+					GPIO_PinWrite(GPIOA, 12, 1);
+				}
+				else
+				{
+					led3active = 0;
+					GPIO_PinWrite(GPIOA, 12, 0);
+				}
+			GPIO_PinWrite(GPIOA, 13, 1);
+			GPIO_PinWrite(GPIOA, 5, 1);
+		}
+		else if (priorityindex == 5) //3-1-2
+		{
+			GPIO_PinWrite(GPIOA, 12, 1);
+			if (adcin3v > 1000)
+				{
+					led3active = 1;
+					GPIO_PinWrite(GPIOA, 13, 1);
+				}
+				else
+				{
+					led3active = 0;
+					GPIO_PinWrite(GPIOA, 13, 0);
+				}
+			GPIO_PinWrite(GPIOA, 5, 1);
+		}
+		else if (priorityindex == 6) //3-2-1
+		{
+			if (adcin3v > 1000)
+				{
+					led3active = 1;
+					GPIO_PinWrite(GPIOA, 12, 1);
+				}
+				else
+				{
+					led3active = 0;
+					GPIO_PinWrite(GPIOA, 12, 0);
+				}
+			GPIO_PinWrite(GPIOA, 13, 1);
+			GPIO_PinWrite(GPIOA, 5, 1);
 		}
 	}
 

@@ -50,6 +50,14 @@ BOARD_InitPins:
     pull_enable: enable}
   - {pin_num: '28', peripheral: GPIOA, signal: 'GPIO, 12', pin_signal: PTA12/FTM1_CH0/I2S0_TXD0/FTM1_QD_PHA, identifier: GPIOA12, direction: OUTPUT, pull_select: up,
     pull_enable: enable}
+  - {pin_num: '43', peripheral: ADC0, signal: 'SE, 14', pin_signal: ADC0_SE14/PTC0/SPI0_PCS4/PDB0_EXTRG/USB_SOF_OUT/FB_AD14}
+  - {pin_num: '56', peripheral: ADC1, signal: 'SE, 7b', pin_signal: ADC1_SE7b/PTC11/LLWU_P11/I2C1_SDA/FTM3_CH7/FB_RW_b}
+  - {pin_num: '36', peripheral: ADC0, signal: 'SE, 9', pin_signal: ADC0_SE9/ADC1_SE9/PTB1/I2C0_SDA/FTM1_CH1/FTM1_QD_PHB}
+  - {pin_num: '44', peripheral: ADC0, signal: 'SE, 15', pin_signal: ADC0_SE15/PTC1/LLWU_P6/SPI0_PCS3/UART1_RTS_b/FTM0_CH0/FB_AD13/I2S0_TXD0/LPUART0_RTS_b}
+  - {pin_num: '45', peripheral: ADC0, signal: 'SE, 4b', pin_signal: ADC0_SE4b/CMP1_IN0/PTC2/SPI0_PCS2/UART1_CTS_b/FTM0_CH1/FB_AD12/I2S0_TX_FS/LPUART0_CTS_b}
+  - {pin_num: '38', peripheral: ADC0, signal: 'SE, 13', pin_signal: ADC0_SE13/PTB3/I2C0_SDA/UART0_CTS_b/FTM0_FLT0}
+  - {pin_num: '37', peripheral: ADC0, signal: 'SE, 12', pin_signal: ADC0_SE12/PTB2/I2C0_SCL/UART0_RTS_b/FTM0_FLT3}
+  - {pin_num: '55', peripheral: ADC1, signal: 'SE, 6b', pin_signal: ADC1_SE6b/PTC10/I2C1_SCL/FTM3_CH6/I2S0_RX_FS/FB_AD5}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -66,6 +74,8 @@ void BOARD_InitPins(void)
     CLOCK_EnableClock(kCLOCK_PortA);
     /* Port B Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_PortB);
+    /* Port C Clock Gate Control: Clock enabled */
+    CLOCK_EnableClock(kCLOCK_PortC);
 
     gpio_pin_config_t GPIOA5_config = {
         .pinDirection = kGPIO_DigitalOutput,
@@ -125,6 +135,30 @@ void BOARD_InitPins(void)
 
     /* PORTB0 (pin 35) is configured as ADC0_SE8 */
     PORT_SetPinMux(PORTB, 0U, kPORT_PinDisabledOrAnalog);
+
+    /* PORTB1 (pin 36) is configured as ADC0_SE9 */
+    PORT_SetPinMux(PORTB, 1U, kPORT_PinDisabledOrAnalog);
+
+    /* PORTB2 (pin 37) is configured as ADC0_SE12 */
+    PORT_SetPinMux(PORTB, 2U, kPORT_PinDisabledOrAnalog);
+
+    /* PORTB3 (pin 38) is configured as ADC0_SE13 */
+    PORT_SetPinMux(PORTB, 3U, kPORT_PinDisabledOrAnalog);
+
+    /* PORTC0 (pin 43) is configured as ADC0_SE14 */
+    PORT_SetPinMux(PORTC, 0U, kPORT_PinDisabledOrAnalog);
+
+    /* PORTC1 (pin 44) is configured as ADC0_SE15 */
+    PORT_SetPinMux(BOARD_INITPINS_SW2_PORT, BOARD_INITPINS_SW2_PIN, kPORT_PinDisabledOrAnalog);
+
+    /* PORTC10 (pin 55) is configured as ADC1_SE6b */
+    PORT_SetPinMux(PORTC, 10U, kPORT_PinDisabledOrAnalog);
+
+    /* PORTC11 (pin 56) is configured as ADC1_SE7b */
+    PORT_SetPinMux(BOARD_INITPINS_RF_CE_PORT, BOARD_INITPINS_RF_CE_PIN, kPORT_PinDisabledOrAnalog);
+
+    /* PORTC2 (pin 45) is configured as ADC0_SE4b */
+    PORT_SetPinMux(PORTC, 2U, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
