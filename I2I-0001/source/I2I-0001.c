@@ -7,7 +7,6 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
-
 #include "fsl_debug_console.h"
 #include "fsl_adc16.h"
 #include "littlevgl_support.h"
@@ -21,9 +20,11 @@
  * Definitions
  ******************************************************************************/
 static volatile bool s_lvgl_initialized = false;
-#define DEMO_ADC16_BASE          ADC0
-#define DEMO_ADC16_CHANNEL_GROUP 0U
-#define DEMO_ADC16_USER_CHANNEL 8U
+#define ADC16_BASE0          ADC0  	//defines base 0 to chip ADC 0
+#define ADC16_BASE1          ADC1  	//defines base 1 to chip ADC 1
+#define ADC16_CHANNEL_GROUP0 0U		//defines group 0 which signifies ADC user group A
+#define ADC16_CHANNEL_GROUP1 1U		//defines group 1 which signifies ADC user group B
+#define ADC16_USER_CHANNEL0 8U
 
 /*******************************************************************************
  * Variables
@@ -31,7 +32,7 @@ static volatile bool s_lvgl_initialized = false;
 
 const uint32_t g_Adc16_12bitFullRange = 4096U;
 int led1active = 0;
-int led2active = 1;
+int led2active = 0;
 int led3active = 0;
 int batterycharge = 0;
 int priorityindex = 0;
@@ -69,218 +70,6 @@ static void AppTask(void *param)
         lv_task_handler();
         vTaskDelay(5);
     }
-}
-
-static void MeasurementTask(void *param)
-  {
-	adc16_config_t adc16ConfigStruct;
-	adc16_channel_config_t adc16ChannelConfigStruct;
-
-    ADC16_GetDefaultConfig(&adc16ConfigStruct);
-	#ifdef BOARD_ADC_USE_ALT_VREF
-    adc16ConfigStruct.referenceVoltageSource = kADC16_ReferenceVoltageSourceValt;
-	#endif
-    ADC16_Init(DEMO_ADC16_BASE, &adc16ConfigStruct);
-    ADC16_EnableHardwareTrigger(DEMO_ADC16_BASE, false); /* Make sure the software trigger is used. */
-	#if defined(FSL_FEATURE_ADC16_HAS_CALIBRATION) && FSL_FEATURE_ADC16_HAS_CALIBRATION
-    if (kStatus_Success == ADC16_DoAutoCalibration(DEMO_ADC16_BASE))
-    {
-        PRINTF("ADC16_DoAutoCalibration() on ACO0 Done.\r\n");
-    }
-    else
-    {
-        PRINTF("ADC16_DoAutoCalibration() on ACO1 Failed.\r\n");
-    }
-	#endif /* FSL_FEATURE_ADC16_HAS_CALIBRATION */
-    PRINTF("ADC Full Range: %d\r\n", g_Adc16_12bitFullRange);
-    PRINTF("Press any key to get user channel's ADC value ...\r\n");
-
-    adc16ChannelConfigStruct.channelNumber = DEMO_ADC16_USER_CHANNEL;
-    adc16ChannelConfigStruct.enableInterruptOnConversionCompleted = false;
-#if defined(FSL_FEATURE_ADC16_HAS_DIFF_MODE) && FSL_FEATURE_ADC16_HAS_DIFF_MODE
-    adc16ChannelConfigStruct.enableDifferentialConversion = false;
-#endif /* FSL_FEATURE_ADC16_HAS_DIFF_MODE */
-
-
-	for( ;; )
-	{
-        ADC16_SetChannelConfig(DEMO_ADC16_BASE, DEMO_ADC16_CHANNEL_GROUP, &adc16ChannelConfigStruct);
-        while (0U == (kADC16_ChannelConversionDoneFlag &
-                      ADC16_GetChannelStatusFlags(DEMO_ADC16_BASE, DEMO_ADC16_CHANNEL_GROUP)))
-        {
-        }
-
-        adcbattery = ADC16_GetChannelConversionValue(DEMO_ADC16_BASE, DEMO_ADC16_CHANNEL_GROUP);
-
-        ConvertADCVBatteryValue();
-
-
-		int j;
-        int k = 0;
-        for(j=0;j<262144;j++);
-        k++;
-	}
-
-	/* Tasks must not attempt to return from their implementing
-	function or otherwise exit.  In newer FreeRTOS port
-	attempting to do so will result in an configASSERT() being
-	called if it is defined.  If it is necessary for a task to
-	exit then have the task call vTaskDelete( NULL ) to ensure
-	its exit is clean. */
-	vTaskDelete( NULL );
-  }
-
-static void DecisionMaker(void *param)
-  {
-
-	for( ;; )
-	{
-		if (priorityindex == 0)
-		{
-			GPIO_PinWrite(GPIOA, 5, 1);
-			GPIO_PinWrite(GPIOA, 13, 1);
-			GPIO_PinWrite(GPIOA, 12, 1);
-		}
-		else if (priorityindex == 1)
-		{
-			GPIO_PinWrite(GPIOA, 5, 0);
-			GPIO_PinWrite(GPIOA, 13, 0);
-			GPIO_PinWrite(GPIOA, 12, 0);
-		}
-		else if (priorityindex == 2)
-		{
-			GPIO_PinWrite(GPIOA, 5, 0);
-			GPIO_PinWrite(GPIOA, 13, 0);
-			GPIO_PinWrite(GPIOA, 12, 1);
-		}
-		else if (priorityindex == 3)
-		{
-			GPIO_PinWrite(GPIOA, 5, 0);
-			GPIO_PinWrite(GPIOA, 13, 1);
-			GPIO_PinWrite(GPIOA, 12, 0);
-		}
-		else if (priorityindex == 4)
-		{
-			GPIO_PinWrite(GPIOA, 5, 1);
-			GPIO_PinWrite(GPIOA, 13, 0);
-			GPIO_PinWrite(GPIOA, 12, 0);
-		}
-		else if (priorityindex == 5)
-		{
-			GPIO_PinWrite(GPIOA, 5, 1);
-			GPIO_PinWrite(GPIOA, 13, 0);
-			GPIO_PinWrite(GPIOA, 12, 1);
-		}
-		else if (priorityindex == 6)
-		{
-			GPIO_PinWrite(GPIOA, 5, 1);
-			GPIO_PinWrite(GPIOA, 13, 1);
-			GPIO_PinWrite(GPIOA, 12, 0);
-		}
-	}
-
-	/* Tasks must not attempt to return from their implementing
-	function or otherwise exit.  In newer FreeRTOS port
-	attempting to do so will result in an configASSERT() being
-	called if it is defined.  If it is necessary for a task to
-	exit then have the task call vTaskDelete( NULL ) to ensure
-	its exit is clean. */
-	vTaskDelete( NULL );
-  }
-
-/*******************************************************************************
- * Code
- ******************************************************************************/
-
-uint32_t DSPI1_GetFreq(void)
-{
-    return CLOCK_GetBusClkFreq();
-}
-
-uint32_t I2C1_GetFreq(void)
-{
-    return CLOCK_GetFreq(I2C1_CLK_SRC);
-}
-/*!
- * @brief Main function
- */
-int main(void)
-{
-    BaseType_t stat;
-    BaseType_t stat2;
-    BaseType_t stat3;
-
-    /* Init board hardware. */
-    BOARD_InitPins();
-    BOARD_BootClockRUN();
-    BOARD_InitDebugConsole();
-
-
-
-    stat = xTaskCreate(AppTask, "littlevgl", configMINIMAL_STACK_SIZE + 800, NULL, tskIDLE_PRIORITY + 2, NULL);
-
-    if (pdPASS != stat)
-    {
-        PRINTF("Failed to create littlevgl task");
-        while (1)
-            ;
-    }
-
-    stat2 = xTaskCreate(MeasurementTask, "measure", configMINIMAL_STACK_SIZE + 10, NULL, tskIDLE_PRIORITY + 1, NULL);
-
-    if (pdPASS != stat2)
-    {
-        PRINTF("Failed to create measurement task");
-        while (1)
-            ;
-    }
-
-    stat3 = xTaskCreate(DecisionMaker, "decisions", configMINIMAL_STACK_SIZE + 10, NULL, tskIDLE_PRIORITY + 1, NULL);
-
-    if (pdPASS != stat3)
-    {
-        PRINTF("Failed to create measurement task");
-        while (1)
-            ;
-    }
-
-    vTaskStartScheduler();
-
-    for (;;)
-    {
-    } /* should never get here */
-}
-
-/*!
- * @brief Malloc failed hook.
- */
-void vApplicationMallocFailedHook(void)
-{
-    for (;;)
-        ;
-}
-
-/*!
- * @brief FreeRTOS tick hook.
- */
-void vApplicationTickHook(void)
-{
-    if (s_lvgl_initialized)
-    {
-        lv_tick_inc(1);
-    }
-}
-
-/*!
- * @brief Stack overflow hook.
- */
-void vApplicationStackOverflowHook(TaskHandle_t xTask, signed char *pcTaskName)
-{
-    (void)pcTaskName;
-    (void)xTask;
-
-    for (;;)
-        ;
 }
 
 int ConvertADCVBatteryValue(void)
@@ -490,4 +279,228 @@ int ConvertADCVBatteryValue(void)
 	else if (adcbattery == 2024) batterycharge = 99;
 	else if (adcbattery == 2025) batterycharge = 99;
 	else if (adcbattery >= 2026) batterycharge = 100;
+}
+
+static void MeasurementTask(void *param)
+  {
+	adc16_config_t adc16ConfigStruct;
+	adc16_channel_config_t adc16ChannelConfigStruct;
+
+    ADC16_GetDefaultConfig(&adc16ConfigStruct);
+	#ifdef BOARD_ADC_USE_ALT_VREF
+    adc16ConfigStruct.referenceVoltageSource = kADC16_ReferenceVoltageSourceValt;
+	#endif
+    ADC16_Init(ADC16_BASE0, &adc16ConfigStruct);
+    ADC16_Init(ADC16_BASE1, &adc16ConfigStruct);
+
+    ADC16_EnableHardwareTrigger(ADC16_BASE0, false); /* Make sure the software trigger is used. */
+    ADC16_EnableHardwareTrigger(ADC16_BASE1, false); /* Make sure the software trigger is used. */
+
+	#if defined(FSL_FEATURE_ADC16_HAS_CALIBRATION) && FSL_FEATURE_ADC16_HAS_CALIBRATION
+    if (kStatus_Success == ADC16_DoAutoCalibration(ADC0))
+    {
+        PRINTF("ADC16_DoAutoCalibration() on ACO0 Done.\r\n");
+    }
+    else
+    {
+        PRINTF("ADC16_DoAutoCalibration() on ACO0 Failed.\r\n");
+    }
+    if (kStatus_Success == ADC16_DoAutoCalibration(ADC1))
+    {
+        PRINTF("ADC16_DoAutoCalibration() on ACO1 Done.\r\n");
+    }
+    else
+    {
+        PRINTF("ADC16_DoAutoCalibration() on ACO1 Failed.\r\n");
+    }
+	#endif /* FSL_FEATURE_ADC16_HAS_CALIBRATION */
+    PRINTF("ADC Full Range: %d\r\n", g_Adc16_12bitFullRange);
+    PRINTF("Press any key to get user channel's ADC value ...\r\n");
+
+    adc16ChannelConfigStruct.enableInterruptOnConversionCompleted = false;
+#if defined(FSL_FEATURE_ADC16_HAS_DIFF_MODE) && FSL_FEATURE_ADC16_HAS_DIFF_MODE
+    adc16ChannelConfigStruct.enableDifferentialConversion = false;
+#endif /* FSL_FEATURE_ADC16_HAS_DIFF_MODE */
+
+
+	for( ;; )
+	{
+		adc16ChannelConfigStruct.channelNumber = ADC16_USER_CHANNEL0;
+		ADC16_SetChannelConfig(ADC16_BASE0, ADC16_CHANNEL_GROUP0, &adc16ChannelConfigStruct);
+        while (0U == (kADC16_ChannelConversionDoneFlag &
+                      ADC16_GetChannelStatusFlags(ADC16_BASE0, ADC16_CHANNEL_GROUP0)))
+        {
+        }
+
+        adcbattery = ADC16_GetChannelConversionValue(ADC16_BASE0, ADC16_CHANNEL_GROUP0);
+
+        ConvertADCVBatteryValue();
+
+
+		int j;
+        int k = 0;
+        for(j=0;j<262144;j++);
+        k++;
+	}
+
+	/* Tasks must not attempt to return from their implementing
+	function or otherwise exit.  In newer FreeRTOS port
+	attempting to do so will result in an configASSERT() being
+	called if it is defined.  If it is necessary for a task to
+	exit then have the task call vTaskDelete( NULL ) to ensure
+	its exit is clean. */
+	vTaskDelete( NULL );
+  }
+
+static void DecisionMaker(void *param)
+  {
+
+	for( ;; )
+	{
+		if (priorityindex == 0)
+		{
+			GPIO_PinWrite(GPIOA, 5, 1);
+			GPIO_PinWrite(GPIOA, 13, 1);
+			GPIO_PinWrite(GPIOA, 12, 1);
+		}
+		else if (priorityindex == 1)
+		{
+			GPIO_PinWrite(GPIOA, 5, 0);
+			GPIO_PinWrite(GPIOA, 13, 0);
+			GPIO_PinWrite(GPIOA, 12, 0);
+		}
+		else if (priorityindex == 2)
+		{
+			GPIO_PinWrite(GPIOA, 5, 0);
+			GPIO_PinWrite(GPIOA, 13, 0);
+			GPIO_PinWrite(GPIOA, 12, 1);
+		}
+		else if (priorityindex == 3)
+		{
+			GPIO_PinWrite(GPIOA, 5, 0);
+			GPIO_PinWrite(GPIOA, 13, 1);
+			GPIO_PinWrite(GPIOA, 12, 0);
+		}
+		else if (priorityindex == 4)
+		{
+			GPIO_PinWrite(GPIOA, 5, 1);
+			GPIO_PinWrite(GPIOA, 13, 0);
+			GPIO_PinWrite(GPIOA, 12, 0);
+		}
+		else if (priorityindex == 5)
+		{
+			GPIO_PinWrite(GPIOA, 5, 1);
+			GPIO_PinWrite(GPIOA, 13, 0);
+			GPIO_PinWrite(GPIOA, 12, 1);
+		}
+		else if (priorityindex == 6)
+		{
+			GPIO_PinWrite(GPIOA, 5, 1);
+			GPIO_PinWrite(GPIOA, 13, 1);
+			GPIO_PinWrite(GPIOA, 12, 0);
+		}
+	}
+
+	/* Tasks must not attempt to return from their implementing
+	function or otherwise exit.  In newer FreeRTOS port
+	attempting to do so will result in an configASSERT() being
+	called if it is defined.  If it is necessary for a task to
+	exit then have the task call vTaskDelete( NULL ) to ensure
+	its exit is clean. */
+	vTaskDelete( NULL );
+  }
+
+/*******************************************************************************
+ * Code
+ ******************************************************************************/
+
+uint32_t DSPI1_GetFreq(void)
+{
+    return CLOCK_GetBusClkFreq();
+}
+
+uint32_t I2C1_GetFreq(void)
+{
+    return CLOCK_GetFreq(I2C1_CLK_SRC);
+}
+/*!
+ * @brief Main function
+ */
+int main(void)
+{
+    BaseType_t stat;
+    BaseType_t stat2;
+    BaseType_t stat3;
+
+    /* Init board hardware. */
+    BOARD_InitPins();
+    BOARD_BootClockRUN();
+    BOARD_InitDebugConsole();
+
+
+
+    stat = xTaskCreate(AppTask, "littlevgl", configMINIMAL_STACK_SIZE + 800, NULL, tskIDLE_PRIORITY + 2, NULL);
+
+    if (pdPASS != stat)
+    {
+        PRINTF("Failed to create littlevgl task");
+        while (1)
+            ;
+    }
+
+    stat2 = xTaskCreate(MeasurementTask, "measure", configMINIMAL_STACK_SIZE + 10, NULL, tskIDLE_PRIORITY + 1, NULL);
+
+    if (pdPASS != stat2)
+    {
+        PRINTF("Failed to create measurement task");
+        while (1)
+            ;
+    }
+
+    stat3 = xTaskCreate(DecisionMaker, "decisions", configMINIMAL_STACK_SIZE + 10, NULL, tskIDLE_PRIORITY + 1, NULL);
+
+    if (pdPASS != stat3)
+    {
+        PRINTF("Failed to create measurement task");
+        while (1)
+            ;
+    }
+
+    vTaskStartScheduler();
+
+    for (;;)
+    {
+    } /* should never get here */
+}
+
+/*!
+ * @brief Malloc failed hook.
+ */
+void vApplicationMallocFailedHook(void)
+{
+    for (;;)
+        ;
+}
+
+/*!
+ * @brief FreeRTOS tick hook.
+ */
+void vApplicationTickHook(void)
+{
+    if (s_lvgl_initialized)
+    {
+        lv_tick_inc(1);
+    }
+}
+
+/*!
+ * @brief Stack overflow hook.
+ */
+void vApplicationStackOverflowHook(TaskHandle_t xTask, signed char *pcTaskName)
+{
+    (void)pcTaskName;
+    (void)xTask;
+
+    for (;;)
+        ;
 }
