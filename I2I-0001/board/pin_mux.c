@@ -13,12 +13,17 @@ package_id: MK22FN512VLH12
 mcu_data: ksdk2_0
 processor_version: 9.0.0
 board: FRDM-K22F
+pin_labels:
+- {pin_num: '27', pin_signal: PTA5/USB_CLKIN/FTM0_CH2/I2S0_TX_BCLK/JTAG_TRST_b, label: 'J1[1]/I2S0_TX_BCLK', identifier: AC_I2S_SCLK;USB_CLKIN;GPIO5;GPIOA5}
+- {pin_num: '28', pin_signal: PTA12/FTM1_CH0/I2S0_TXD0/FTM1_QD_PHA, label: 'J1[5]/I2S0_TXD0', identifier: AC_I2S_DIN;GPIOA12}
+- {pin_num: '29', pin_signal: PTA13/LLWU_P4/FTM1_CH1/I2S0_TX_FS/FTM1_QD_PHB, label: 'J1[3]', identifier: AC_I2S_LRCLK;GPIO13;GPIOA13}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
 
 #include "fsl_common.h"
 #include "fsl_port.h"
+#include "fsl_gpio.h"
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
@@ -39,6 +44,12 @@ BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '23', peripheral: GPIOA, signal: 'GPIO, 1', pin_signal: PTA1/UART0_RX/FTM0_CH6/JTAG_TDI/EZP_DI}
+  - {pin_num: '35', peripheral: ADC0, signal: 'SE, 8', pin_signal: ADC0_SE8/ADC1_SE8/PTB0/LLWU_P5/I2C0_SCL/FTM1_CH0/FTM1_QD_PHA}
+  - {pin_num: '27', peripheral: GPIOA, signal: 'GPIO, 5', pin_signal: PTA5/USB_CLKIN/FTM0_CH2/I2S0_TX_BCLK/JTAG_TRST_b, identifier: GPIOA5, direction: OUTPUT, pull_enable: enable}
+  - {pin_num: '29', peripheral: GPIOA, signal: 'GPIO, 13', pin_signal: PTA13/LLWU_P4/FTM1_CH1/I2S0_TX_FS/FTM1_QD_PHB, identifier: GPIOA13, direction: OUTPUT, pull_select: up,
+    pull_enable: enable}
+  - {pin_num: '28', peripheral: GPIOA, signal: 'GPIO, 12', pin_signal: PTA12/FTM1_CH0/I2S0_TXD0/FTM1_QD_PHA, identifier: GPIOA12, direction: OUTPUT, pull_select: up,
+    pull_enable: enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -53,9 +64,67 @@ void BOARD_InitPins(void)
 {
     /* Port A Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_PortA);
+    /* Port B Clock Gate Control: Clock enabled */
+    CLOCK_EnableClock(kCLOCK_PortB);
+
+    gpio_pin_config_t GPIOA5_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PTA5 (pin 27)  */
+    GPIO_PinInit(BOARD_INITPINS_GPIOA5_GPIO, BOARD_INITPINS_GPIOA5_PIN, &GPIOA5_config);
+
+    gpio_pin_config_t GPIOA12_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PTA12 (pin 28)  */
+    GPIO_PinInit(BOARD_INITPINS_GPIOA12_GPIO, BOARD_INITPINS_GPIOA12_PIN, &GPIOA12_config);
+
+    gpio_pin_config_t GPIOA13_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PTA13 (pin 29)  */
+    GPIO_PinInit(BOARD_INITPINS_GPIOA13_GPIO, BOARD_INITPINS_GPIOA13_PIN, &GPIOA13_config);
 
     /* PORTA1 (pin 23) is configured as PTA1 */
     PORT_SetPinMux(BOARD_INITPINS_LEDRGB_RED_PORT, BOARD_INITPINS_LEDRGB_RED_PIN, kPORT_MuxAsGpio);
+
+    /* PORTA12 (pin 28) is configured as PTA12 */
+    PORT_SetPinMux(BOARD_INITPINS_GPIOA12_PORT, BOARD_INITPINS_GPIOA12_PIN, kPORT_MuxAsGpio);
+
+    PORTA->PCR[12] = ((PORTA->PCR[12] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_ISF_MASK)))
+
+                      /* Pull Select: Internal pullup resistor is enabled on the corresponding pin, if the
+                       * corresponding PE field is set. */
+                      | (uint32_t)(kPORT_PullUp));
+
+    /* PORTA13 (pin 29) is configured as PTA13 */
+    PORT_SetPinMux(BOARD_INITPINS_GPIOA13_PORT, BOARD_INITPINS_GPIOA13_PIN, kPORT_MuxAsGpio);
+
+    PORTA->PCR[13] = ((PORTA->PCR[13] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_ISF_MASK)))
+
+                      /* Pull Select: Internal pullup resistor is enabled on the corresponding pin, if the
+                       * corresponding PE field is set. */
+                      | (uint32_t)(kPORT_PullUp));
+
+    /* PORTA5 (pin 27) is configured as PTA5 */
+    PORT_SetPinMux(BOARD_INITPINS_GPIOA5_PORT, BOARD_INITPINS_GPIOA5_PIN, kPORT_MuxAsGpio);
+
+    PORTA->PCR[5] = ((PORTA->PCR[5] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_PE_MASK | PORT_PCR_ISF_MASK)))
+
+                     /* Pull Enable: Internal pullup or pulldown resistor is enabled on the corresponding pin. */
+                     | (uint32_t)(PORT_PCR_PE_MASK));
+
+    /* PORTB0 (pin 35) is configured as ADC0_SE8 */
+    PORT_SetPinMux(PORTB, 0U, kPORT_PinDisabledOrAnalog);
 }
 
 /* clang-format off */
