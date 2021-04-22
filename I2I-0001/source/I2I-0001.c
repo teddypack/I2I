@@ -24,7 +24,17 @@ static volatile bool s_lvgl_initialized = false;
 #define ADC16_BASE1          ADC1  	//defines base 1 to chip ADC 1
 #define ADC16_CHANNEL_GROUP0 0U		//defines group 0 which signifies ADC user group A
 #define ADC16_CHANNEL_GROUP1 1U		//defines group 1 which signifies ADC user group B
-#define ADC16_USER_CHANNEL0 8U
+#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8 for battery voltage reading
+
+//below ADCs are for Spencer's stuff
+#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
+#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
+#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
+#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
+#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
+#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
+#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
+#define ADC16_USER_CHANNEL0 8U      //define channel 0 to ADC_SE8
 
 /*******************************************************************************
  * Variables
@@ -38,18 +48,18 @@ int batterycharge = 0;
 int priorityindex = 0;
 
 int adcbattery = 0;
-int adcin1v = 2604;
-int adcin1a = 3615;
-int adcin2v = 4626;
-int adcin2a = 5637;
-int adcin3v = 6648;
-int adcin3a = 7659;
-int adcout1v = 8670;
-int adcout1a = 9681;
-int adcout2v = 692;
-int adcout2a = 1703;
-int adcout3v = 2714;
-int adcout3a = 3725;
+int adcin1v = 0;
+int adcin1a = 0;
+int adcin2v = 0;
+int adcin2a = 0;
+int adcin3v = 0;
+int adcin3a = 0;
+int adcout1v = 0;
+int adcout1a = 0;
+int adcout2v = 0;
+int adcout2a = 0;
+int adcout3v = 0;
+int adcout3a = 0;
 
 /*******************************************************************************
  * Prototypes
